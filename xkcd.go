@@ -1,9 +1,14 @@
 package xkcd
 
-//TODO getFileNames()
+import (
+    "fmt"
 
-//TODO stringInSlice()
+    "github.com/anaskhan96/soup"
+)
 
-func Home() {
-
+type Comic {
+    id string
+    url string
 }
+
+fn (Comic) Save
