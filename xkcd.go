@@ -1,14 +1,29 @@
 package xkcd
 
 import (
-    "fmt"
+    //"fmt"
+    "os/user"
+    fp "path/filepath"
 
-    "github.com/anaskhan96/soup"
+    //"github.com/anaskhan96/soup"
 )
 
-type Comic {
-    id string
-    url string
+var HomeDir string
+
+func init() {
+    user, _ := user.Current()
+    HomeDir = fp.Join(user.HomeDir, ".xkcd", "comics")
 }
 
-fn (Comic) Save
+type Comic struct {
+    Num int
+    URL string
+}
+
+func (c Comic) Id() string {
+    
+}
+
+func (c Comic) FetchLatest {
+    
+}
