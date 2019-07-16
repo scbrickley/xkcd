@@ -8,7 +8,7 @@ TODO:
 - Allow users to mark favorites
 - Download captions
 - Read in optional arguments to:
-    * randomize the order
+    * ~~randomize the order~~
     * ~~Stop the downloader once it finds a duplicate comic~~
     * allow users to view captions
     * allow users to mark favorites
