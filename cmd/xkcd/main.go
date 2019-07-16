@@ -5,15 +5,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"os/exec"
-	"os/user"
-	fp "path/filepath"
-	"strconv"
 	"strings"
 
-	"github.com/anaskhan96/soup"
+	"gitlab.com/scbrickley/xkcd"
 )
 
 func stringInSlice(text string, list []string) bool {
@@ -42,38 +38,22 @@ func main() {
 	flag.Parse()
 
 	// Make the appropriate directories
-	dir := os.Getenv("HOME") + "/.xkcd/"
-
-	os.MkdirAll(dir+"comics/captions/", os.ModePerm)
-	os.MkdirAll(dir+"favorites/captions/", os.ModePerm)
+	os.MkdirAll(xkcd.CapDir, os.ModePerm)
+	os.MkdirAll(xkcd.FavCapDir, os.ModePerm)
 
 	// So we can see what comics have already been downloaded
-	filenames := getFileNames(dir + "comics/")
+	filenames := getFileNames(xkcd.ComicDir)
 
-	// Download the HTML contents of the xkcd home page
-	url := "https://xkcd.com/"
-	resp, _ := soup.Get(url)
-	doc := soup.HTMLParse(resp)
+	comic := xkcd.LatestComic()
 
-	// Find the prev link, cast it as an int, and ++ it to get the current comic #
-	prev := doc.Find("a", "rel", "prev")
-	comicNum, _ := strconv.Atoi(strings.ReplaceAll(prev.Attrs()["href"], "/", ""))
-	comicNum++
-	comID := strconv.Itoa(comicNum)
-
-	for prev.Attrs()["href"] != "#" {
-		filename := fmt.Sprintf("%04s", comID) + ".png"
-
-		// If filename is already in .xkcd/comics, either:
+	for comic.Num >= 1 {
+		// If comic.FileName() is already in .xkcd/comics, either:
 		// 1. skip it, or
-		// 2. Stop the downloader
-		if stringInSlice(filename, filenames) {
+		// 2. Exit the program
+		if stringInSlice(comic.FileName(), filenames) {
 			if *all {
-				fmt.Println("Skipping comic #"+comID, "- duplicate")
-				prev = doc.Find("a", "rel", "prev")
-				comID = strings.ReplaceAll(prev.Attrs()["href"], "/", "")
-				resp, _ = soup.Get(url + comID)
-				doc = soup.HTMLParse(resp)
+				fmt.Println("Skipping comic #"+comic.ID(), "- duplicate")
+				comic.PrevComic()
 				continue
 			} else {
 				fmt.Println("No new comics.")
@@ -81,80 +61,45 @@ func main() {
 			}
 		}
 
-		comicPath := dir + "comics/" + filename
-
-		resp, _ = soup.Get(url + comID)
-		doc = soup.HTMLParse(resp)
-
-		// find the comic element
-		comicElem := doc.Find("div", "id", "comic").Find("img")
-
 		// if no comic element was found on this page, move on to the next page
-		if comicElem.Pointer == nil {
-			fmt.Println("Skipping comic #"+comID, "- no comic element")
-			prev = doc.Find("a", "rel", "prev")
-			comID = strings.ReplaceAll(prev.Attrs()["href"], "/", "")
-			resp, _ = soup.Get(url + comID)
-			doc = soup.HTMLParse(resp)
+		if comic.ImgElem().Pointer == nil {
+			fmt.Println("Skipping comic #"+comic.ID(), "- no comic element")
+			comic.PrevComic()
 			continue
 		}
-
-		// find the url for the image
-		comicSrc := comicElem.Attrs()["src"]
 
 		// if the url is not formatted properly, skip it
-		if strings.HasPrefix(comicSrc, "//imgs.xkcd.com") == false {
-			fmt.Println("Skipping comic #"+comID, "- probably a flash game")
-			prev = doc.Find("a", "rel", "prev")
-			comID = strings.ReplaceAll(prev.Attrs()["href"], "/", "")
-			resp, _ = soup.Get(url + comID)
-			doc = soup.HTMLParse(resp)
+		if strings.Contains(comic.ImgSrc(), "imgs.xkcd.com") == false {
+			fmt.Println("Skipping comic #"+comic.ID(), "- probably a flash game")
+			comic.PrevComic()
 			continue
 		}
-
-		// Add the 'https:' prefix
-		comicSrc = "https:" + comicSrc
 
 		// get the image data
-		comic, err := http.Get(comicSrc)
+		comicData, err := comic.ImgData()
 		if err != nil {
-			fmt.Println("Skipping comic #"+comID, "- bad image")
-			prev = doc.Find("a", "rel", "prev")
-			comID = strings.ReplaceAll(prev.Attrs()["href"], "/", "")
-			resp, _ = soup.Get(url + comID)
-			doc = soup.HTMLParse(resp)
+			fmt.Println("Skipping comic #"+comic.ID(), "- bad image")
+			comic.PrevComic()
 			continue
 		}
 
-		comicFile, err := os.Create(comicPath)
+		comicFile, err := os.Create(comic.FilePath())
 		if err != nil {
-			fmt.Println("Skipping comic #"+comID, "- could not create file")
-			prev = doc.Find("a", "rel", "prev")
-			comID = strings.ReplaceAll(prev.Attrs()["href"], "/", "")
-			resp, _ = soup.Get(url + comID)
-			doc = soup.HTMLParse(resp)
+			fmt.Println("Skipping comic #"+comic.ID(), "- could not create file")
+			comic.PrevComic()
 			continue
 		}
 
-		_, err = io.Copy(comicFile, comic.Body)
+		_, err = io.Copy(comicFile, comicData.Body)
 		if err != nil {
-			fmt.Println("Skipping comic #"+comID, "- could not copy data")
-			prev = doc.Find("a", "rel", "prev")
-			comID = strings.ReplaceAll(prev.Attrs()["href"], "/", "")
-			resp, _ = soup.Get(url + comID)
-			doc = soup.HTMLParse(resp)
+			fmt.Println("Skipping comic #"+comic.ID(), "- could not copy data")
+			comic.PrevComic()
 			continue
 		}
 
-		fmt.Println("Downloading", filename)
-		prev = doc.Find("a", "rel", "prev")
-		comID = strings.ReplaceAll(prev.Attrs()["href"], "/", "")
-		resp, _ = soup.Get(url + comID)
-		doc = soup.HTMLParse(resp)
-		continue
+		fmt.Println("Downloading comic #" + comic.ID())
+		comic.PrevComic()
 	}
 
-	user, _ := user.Current()
-	path := fp.Join(user.HomeDir, ".xkcd", "comics")
-	exec.Command("feh", "-n", path).Run()
+	exec.Command("feh", "-n", xkcd.ComicDir).Run()
 }
