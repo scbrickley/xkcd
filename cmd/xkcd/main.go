@@ -35,6 +35,7 @@ func getFileNames(path string) []string {
 
 func main() {
 	all := flag.Bool("a", false, "Download all comics and skip duplicates?")
+	randomize := flag.Bool("r", false, "Randomize order of comics?")
 	flag.Parse()
 
 	// Make the appropriate directories
@@ -101,5 +102,9 @@ func main() {
 		comic.PrevComic()
 	}
 
-	exec.Command("feh", "-n", xkcd.ComicDir).Run()
+	if *randomize {
+		exec.Command("feh", "-z", xkcd.ComicDir).Run()
+	} else {
+		exec.Command("feh", "-n", xkcd.ComicDir).Run()
+	}
 }
