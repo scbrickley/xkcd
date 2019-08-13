@@ -31,7 +31,16 @@ type Comic struct {
 	HTML soup.Root
 }
 
-// Returns the Comic Number in string form
+type HTTPImage struct {
+    resp *http.Response
+    url string
+}
+
+func (i HTTPImage) URL() string {
+    return i.url
+}
+
+// ID returns the Comic Number in string form
 func (c Comic) ID() string {
 	return strconv.Itoa(c.Num)
 }
@@ -65,7 +74,7 @@ func (c Comic) ImgSrc() string {
 }
 
 // Returns the image data for the comic
-func (c Comic) ImgData() (*http.Response, error) {
+func (c Comic) Image() (*http.Response.Body, error) {
 	comicData, err := http.Get(c.ImgSrc())
 	return comicData, err
 }
