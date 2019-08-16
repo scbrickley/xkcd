@@ -77,7 +77,7 @@ func main() {
 		}
 
 		// get the image data
-		comicData, err := comic.ImgData()
+		comicData, err := comic.Image()
 		if err != nil {
 			fmt.Println("Skipping comic #"+comic.ID(), "- bad image")
 			comic.PrevComic()
