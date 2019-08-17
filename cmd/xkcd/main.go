@@ -39,11 +39,10 @@ func main() {
 	flag.Parse()
 
 	// Make the appropriate directories
-	os.MkdirAll(xkcd.CapDir, os.ModePerm)
-	os.MkdirAll(xkcd.FavCapDir, os.ModePerm)
+	os.MkdirAll(xkcd.HomeDir, os.ModePerm)
 
 	// So we can see what comics have already been downloaded
-	filenames := getFileNames(xkcd.ComicDir)
+	filenames := getFileNames(xkcd.HomeDir)
 
 	comic := xkcd.LatestComic()
 
@@ -103,8 +102,8 @@ func main() {
 	}
 
 	if *randomize {
-		exec.Command("feh", "-z", xkcd.ComicDir).Run()
+		exec.Command("feh", "-z", "-x", xkcd.HomeDir).Run()
 	} else {
-		exec.Command("feh", "-n", xkcd.ComicDir).Run()
+		exec.Command("feh", "-n", "-x", xkcd.HomeDir).Run()
 	}
 }

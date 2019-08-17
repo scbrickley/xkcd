@@ -12,18 +12,10 @@ import (
 )
 
 var HomeDir string
-var ComicDir string
-var CapDir string
-var FavDir string
-var FavCapDir string
 
 func init() {
 	user, _ := user.Current()
 	HomeDir = fp.Join(user.HomeDir, ".xkcd")
-	ComicDir = fp.Join(HomeDir, "comics")
-	CapDir = fp.Join(ComicDir, "captions")
-	FavDir = fp.Join(HomeDir, "favorites")
-	FavCapDir = fp.Join(FavDir, "captions")
 }
 
 type Comic struct {
@@ -32,12 +24,12 @@ type Comic struct {
 }
 
 type HTTPImage struct {
-    resp *http.Response
-    url string
+	resp *http.Response
+	url  string
 }
 
 func (i HTTPImage) URL() string {
-    return i.url
+	return i.url
 }
 
 // ID returns the Comic Number in string form
@@ -85,7 +77,7 @@ func (c Comic) FileName() string {
 }
 
 func (c Comic) FilePath() string {
-	return fp.Join(ComicDir, c.FileName())
+	return fp.Join(HomeDir, c.FileName())
 }
 
 // Returns a Comic representing the most recent post on xkcd.com
