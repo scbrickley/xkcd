@@ -12,16 +12,16 @@ This is a rudimentary version. The following features are still in the works, an
 
 ## Installation
 
-*WARNING: THE `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS, if you want to build your own.*
+*WARNING: THE `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS. If you want to build your own executable simply list `"gitlab.com/scbrickley/xkcd"` under your imports in your `main.go` file.*
 
-- Install the Go programming language on your machine. Follow instructions [here](https://golang.org/doc/install?download=go1.12.9.linux-amd64.tar.gz).
+- Install the Go programming language on your machine. Follow instructions [here](https://golang.org/dl/).
 
 - Install `feh`
     - run `sudo apt-get install feh` for Debian-based distros
     - run `sudo pacman -S feh` for Arch-based distros
     - Or the equivalent for your distribution's package manager.
 - Create your Go directory if you don't have one already: `mkdir -p $HOME/go/src`
-- Navigate to that directory `cd ~/go/src`
+- Navigate to that directory `cd $HOME/go/src`
 - Fetch the repository using `go get gitlab.com/scbrickley/xkcd`
 - Navigate to the cmd directory, compile, and install
     - `cd $HOME/go/src/gitlab.com/scbrickley/xkcd/cmd/xkcd`
@@ -37,9 +37,9 @@ After installation, you should be able to type `xkcd` into your terminal to star
 
 The default behavior is to always pull up the newest comic. If you instead want to view the comics in a randomized order, type `xkcd -r` instead.
 
-If you accidentally delete some of the comics, you can always run `xkcd -a` to re download them. The program will skip over any duplicate comics in the `~/.xkcd` directory, and only download the ones that are missing.
+If you accidentally delete some of the comics, you can always run `xkcd -a` to re-download them. The program will skip over any duplicate comics in the `$HOME/.xkcd` directory, and only download the ones that are missing.
 
-## Known issues
+## Known Issues
 
 If `feh` is printing out error messages about incorrect sRGB profiles for .png files when viewing certain comics, follow these instructions:
 
