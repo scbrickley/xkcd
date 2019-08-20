@@ -17,17 +17,17 @@ This is a rudimentary version. The following features are still in the works, an
 - Install the Go programming language on your machine. Follow instructions [here](https://golang.org/doc/install?download=go1.12.9.linux-amd64.tar.gz).
 
 - Install `feh`
--- run `sudo apt-get install feh` for Debian-based distros
--- run `sudo pacman -S feh` for Arch-based distros
--- Or the equivalent for your distribution's package manager.
+    - run `sudo apt-get install feh` for Debian-based distros
+    - run `sudo pacman -S feh` for Arch-based distros
+    - Or the equivalent for your distribution's package manager.
 - Create your Go directory if you don't have one already: `mkdir -p $HOME/go/src`
 - Navigate to that directory `cd ~/go/src`
 - Fetch the repository using `go get gitlab.com/scbrickley/xkcd`
 - Navigate to the cmd directory, compile, and install
     - `cd $HOME/go/src/gitlab.com/scbrickley/xkcd/cmd/xkcd`
-`go get`
-`go build`
-`go install`
+    - `go get`
+    - `go build`
+    - `go install`
 
 **Note: these commands may not work if you keep your go working directory somewhere other than your home folder. Adjust these commands accordingly.**
 
@@ -43,10 +43,10 @@ If you accidentally delete some of the comics, you can always run `xkcd -a` to r
 
 If `feh` is printing out error messages about incorrect sRGB profiles for .png files when viewing certain comics, follow these instructions:
 
-### 1. Install `pngcrush` via `sudo apt-get install pngcrush` (or the equivalent for your package manager).
+- Install `pngcrush` via `sudo apt-get install pngcrush` (or the equivalent for your package manager).
 
-### 1. Navigate to the project directory: `cd ~/go/src/gitlab.com/scbrickely/xkcd`
+- Navigate to the project directory: `cd ~/go/src/gitlab.com/scbrickely/xkcd`
 
-### 1. Run the `fix` script: `./fix`
+- Run the `fix` script: `./fix`
 
 The error is actually harmless, but if the error messages are bothering you, this should fix the problem.
