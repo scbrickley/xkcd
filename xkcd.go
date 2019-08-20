@@ -23,15 +23,6 @@ type Comic struct {
 	HTML soup.Root
 }
 
-type HTTPImage struct {
-	resp *http.Response
-	url  string
-}
-
-func (i HTTPImage) URL() string {
-	return i.url
-}
-
 // ID returns the Comic Number in string form
 func (c Comic) ID() string {
 	return strconv.Itoa(c.Num)
@@ -76,6 +67,7 @@ func (c Comic) FileName() string {
 	return fmt.Sprintf("%04s", c.ID()) + ".png"
 }
 
+// Returnsa string represnting the appropriate filepath for a comic
 func (c Comic) FilePath() string {
 	return fp.Join(HomeDir, c.FileName())
 }
