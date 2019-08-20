@@ -3,7 +3,7 @@
 echo "Validating the sRGB profile for all .png files in $HOME/.xkcd/comics"
 echo "This may take a few minutes"
 
-for pic in $HOME/.xkcd/comics/*.png
+for pic in $HOME/.xkcd/*.png
 do
     pngcrush -ow -rem allb -reduce $pic &> /dev/null
 done
