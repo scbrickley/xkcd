@@ -14,29 +14,17 @@ This is a rudimentary version. The following features are still in the works, an
 
 *WARNING: THE `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS, if you want to build your own.*
 
-### 1. Install the Go programming language on your machine. Follow instructions [here](https://golang.org/doc/install?download=go1.12.9.linux-amd64.tar.gz).
+- Install the Go programming language on your machine. Follow instructions [here](https://golang.org/doc/install?download=go1.12.9.linux-amd64.tar.gz).
 
-### 1. Install `feh`
-
-run `sudo apt-get install feh` for Debian-based distros
-
-run `sudo pacman -S feh` for Arch-based distros
-
-Or the equivalent for your distributions package manager.
-
-### 1. Create your Go directory if you don't have one already.
-
-`mkdir -p $HOME/go/src`
-
-### 1. Navigate to that directory
-
-`cd ~/go/src`
-
-### 1. Fetch the repository using `go get gitlab.com/scbrickley/xkcd`
-
-### 1. Navigate to the cmd directory, comile, and install
-
-`cd $HOME/go/src/gitlab.com/scbrickley/xkcd/cmd/xkcd`
+- Install `feh`
+-- run `sudo apt-get install feh` for Debian-based distros
+-- run `sudo pacman -S feh` for Arch-based distros
+-- Or the equivalent for your distribution's package manager.
+- Create your Go directory if you don't have one already: `mkdir -p $HOME/go/src`
+- Navigate to that directory `cd ~/go/src`
+- Fetch the repository using `go get gitlab.com/scbrickley/xkcd`
+- Navigate to the cmd directory, compile, and install
+    - `cd $HOME/go/src/gitlab.com/scbrickley/xkcd/cmd/xkcd`
 `go get`
 `go build`
 `go install`
