@@ -1,4 +1,4 @@
-# XKCD Terminal viewer
+# XKCD Terminal Browser
 
 A command line app that downloads all comics from [xkcd.com](https://xkcd.com) and allows you to browse through them from the terminal.
 
@@ -17,9 +17,9 @@ This is a rudimentary version. The following features are still in the works, an
 - Install the Go programming language on your machine. Follow instructions [here](https://golang.org/dl/).
 
 - Install `feh`
-    - run `sudo apt-get install feh` for Debian-based distros
-    - run `sudo pacman -S feh` for Arch-based distros
-    - Or the equivalent for your distribution's package manager.
+    - `sudo apt-get install feh` for Debian-based distros
+    - `sudo pacman -S feh` for Arch-based distros
+    - ...or the equivalent for your distribution's package manager.
 - Create your Go directory if you don't have one already: `mkdir -p $HOME/go/src`
 - Navigate to that directory `cd $HOME/go/src`
 - Fetch the repository using `go get gitlab.com/scbrickley/xkcd`
