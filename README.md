@@ -29,7 +29,7 @@ This is a rudimentary version. The following features are still in the works, an
     - `go build`
     - `go install`
 
-**Note: these commands may not work if you keep your go working directory somewhere other than your home folder. Adjust these commands accordingly.**
+**Note: these commands may not work if you keep your Go working directory somewhere other than your home folder. Adjust these commands accordingly.**
 
 ## Usage
 
