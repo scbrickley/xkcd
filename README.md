@@ -9,7 +9,7 @@ This is a rudimentary version. The following features are still in the works, an
 - Search by number
 - Save favorites
 - Installation via package manager
-- Proper Documentation of the `xkcd` module
+- Proper documentation of the `xkcd` module
 
 ## Installation
 
@@ -30,13 +30,13 @@ This is a rudimentary version. The following features are still in the works, an
     - `go build`
     - `go install`
 
-**Note: these commands may not work if you keep your Go working directory somewhere other than your home folder. Adjust these commands accordingly.**
+**Note: these commands will not work if you keep your Go working directory somewhere other than your home folder. Adjust these commands accordingly.**
 
 ## Usage
 
 After installation, you should be able to type `xkcd` into your terminal to start the process. Initial download of all the comics may take a few minutes. Once it's done, a `feh` window should pop up and let you browse through the comics as you like.
 
-The default behavior is to always pull up the newest comic. If you instead want to view the comics in a randomized order, type `xkcd -r` instead.
+The default behavior is to display the newest comic first, and then browse through the comics in order from newest to oldest. If you instead want to view the comics in a randomized order, type `xkcd -r` instead.
 
 If you accidentally delete some of the comics, you can always run `xkcd -a` to re-download them. The program will skip over any duplicate comics in the `$HOME/.xkcd` directory, and only download the ones that are missing.
 
@@ -46,7 +46,7 @@ If `feh` is printing out error messages about incorrect sRGB profiles for .png f
 
 - Install `pngcrush` via `sudo apt-get install pngcrush` (or the equivalent for your package manager).
 
-- Navigate to the project directory: `cd ~/go/src/gitlab.com/scbrickely/xkcd`
+- Navigate to the project directory: `cd $HOME/go/src/gitlab.com/scbrickely/xkcd`
 
 - Run the `fix` script: `./fix`
 
