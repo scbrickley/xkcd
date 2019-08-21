@@ -9,6 +9,7 @@ This is a rudimentary version. The following features are still in the works, an
 - Search by number
 - Save favorites
 - Installation via package manager
+- Proper Documentation of the `xkcd` module
 
 ## Installation
 
