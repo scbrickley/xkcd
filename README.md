@@ -46,7 +46,7 @@ If `feh` is printing out error messages about incorrect sRGB profiles for .png f
 
 - Install `pngcrush` via `sudo apt-get install pngcrush` (or the equivalent for your package manager).
 
-- Navigate to the project directory: `cd $HOME/go/src/gitlab.com/scbrickely/xkcd`
+- Navigate to the project directory: `cd $HOME/go/src/gitlab.com/scbrickley/xkcd`
 
 - Run the `fix` script: `./fix`
 
