@@ -67,7 +67,7 @@ func (c Comic) FileName() string {
 	return fmt.Sprintf("%04s", c.ID()) + ".png"
 }
 
-// Returnsa string represnting the appropriate filepath for a comic
+// Returns a string represnting the appropriate filepath for a comic
 func (c Comic) FilePath() string {
 	return fp.Join(HomeDir, c.FileName())
 }
