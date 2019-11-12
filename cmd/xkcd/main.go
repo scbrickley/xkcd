@@ -4,34 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
 
 	"gitlab.com/scbrickley/xkcd"
 )
-
-func stringInSlice(text string, list []string) bool {
-	for _, val := range list {
-		if val == text {
-			return true
-		}
-	}
-	return false
-}
-
-func getFileNames(path string) []string {
-	contents, _ := ioutil.ReadDir(path)
-
-	filenames := make([]string, 1)
-
-	for _, file := range contents {
-		filenames = append(filenames, file.Name())
-	}
-
-	return filenames
-}
 
 func main() {
 	all := flag.Bool("a", false, "Download all comics and skip duplicates?")
@@ -41,22 +19,19 @@ func main() {
 	// Make the appropriate directories
 	os.MkdirAll(xkcd.HomeDir, os.ModePerm)
 
-	// So we can see what comics have already been downloaded
-	filenames := getFileNames(xkcd.HomeDir)
-
 	comic := xkcd.LatestComic()
 
 	for comic.Num >= 1 {
 		// If comic.FileName() is already in .xkcd/comics, either:
 		// 1. skip it, or
 		// 2. Exit the program
-		if stringInSlice(comic.FileName(), filenames) {
+		if comic.IsDuplicate() {
 			if *all {
 				fmt.Println("Skipping comic #"+comic.ID(), "- duplicate")
 				comic.PrevComic()
 				continue
 			} else {
-				fmt.Println("No new comics.")
+				fmt.Println("No more new comics.")
 				break
 			}
 		}

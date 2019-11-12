@@ -1,8 +1,12 @@
 package xkcd
 
 import (
+	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"os/user"
 	fp "path/filepath"
 	"strconv"
@@ -11,7 +15,9 @@ import (
 	"github.com/anaskhan96/soup"
 )
 
-var HomeDir string
+var (
+	HomeDir string
+)
 
 func init() {
 	user, _ := user.Current()
@@ -72,6 +78,12 @@ func (c Comic) FilePath() string {
 	return fp.Join(HomeDir, c.FileName())
 }
 
+// Checks if a comic with the same filename is already in $HOME/.xkcd/
+func (c Comic) IsDuplicate() bool {
+	filenames := getFileNames(HomeDir)
+	return stringInSlice(c.FileName(), filenames)
+}
+
 // Returns a Comic representing the most recent post on xkcd.com
 func LatestComic() Comic {
 	url := "https://xkcd.com"
@@ -83,4 +95,70 @@ func LatestComic() Comic {
 	comicNum++
 
 	return Comic{comicNum, doc}
+}
+
+// Gets a comic based on the number
+func New(comicNum int) (Comic, error) {
+	url := "https://xkcd.com/" + strconv.Itoa(comicNum)
+	resp, err := soup.Get(url)
+	doc := soup.HTMLParse(resp)
+
+	return Comic{comicNum, doc}, err
+}
+
+// Save the comic to $HOME/.xkcd
+func (c Comic) Save() error {
+	// No comic element was found
+	if c.ImgElem().Pointer == nil {
+		return errors.New("No comic element")
+	}
+
+	// Improperly formatted image URL, which usually means it's not an image
+	if strings.Contains(c.ImgSrc(), "imgs.xkcd.com") == false {
+		return errors.New("Probably a flash game")
+	}
+
+	// Get the image data
+	comicData, err := c.Image()
+
+	// Check for possibly corrupted image data
+	if err != nil {
+		return errors.New("Bad image")
+	}
+
+	// Create the file where the image data will be written
+	comicFile, err := os.Create(c.FilePath())
+	if err != nil {
+		return errors.New("Could not create file")
+	}
+
+	// Copy the image data into the filespace
+	_, err = io.Copy(comicFile, comicData.Body)
+	if err != nil {
+		return errors.New("Could not copy data")
+	}
+
+	return nil
+}
+
+//--------------- Helper Functions --------------//
+func stringInSlice(text string, list []string) bool {
+	for _, val := range list {
+		if val == text {
+			return true
+		}
+	}
+	return false
+}
+
+func getFileNames(path string) []string {
+	contents, _ := ioutil.ReadDir(path)
+
+	filenames := make([]string, 1)
+
+	for _, file := range contents {
+		filenames = append(filenames, file.Name())
+	}
+
+	return filenames
 }
