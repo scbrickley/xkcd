@@ -19,8 +19,8 @@ func main() {
 
 	comic := xkcd.LatestComic()
 
-	for comic.Num >= 1 {
-		// If comic.FileName() is already in .xkcd/comics, either:
+	for comic.Num() >= 1 {
+		// If comic.FileName() is already in $HOME/.xkcd, either:
 		// 1. skip it, or
 		// 2. Exit the program
 		if comic.IsDuplicate() {

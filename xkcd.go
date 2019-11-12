@@ -25,13 +25,17 @@ func init() {
 }
 
 type Comic struct {
-	Num  int
-	HTML soup.Root
+	num  int
+	html soup.Root
+}
+
+func (c Comic) Num() int {
+	return c.num
 }
 
 // ID returns the Comic Number in string form
 func (c Comic) ID() string {
-	return strconv.Itoa(c.Num)
+	return strconv.Itoa(c.Num())
 }
 
 // Returns the URL to the comic
@@ -41,20 +45,20 @@ func (c Comic) URL() string {
 
 // Returns the text in the "href" of the "prev" link of the comic webpage
 func (c Comic) PrevText() string {
-	return c.HTML.Find("a", "rel", "prev").Attrs()["href"]
+	return c.html.Find("a", "rel", "prev").Attrs()["href"]
 }
 
 // Finds the previous comic, sets the Num field to the number of the new comic
 // and updates the HTML content accordingly
 func (c *Comic) PrevComic() {
-	c.Num, _ = strconv.Atoi(strings.ReplaceAll(c.PrevText(), "/", ""))
+	c.num, _ = strconv.Atoi(strings.ReplaceAll(c.PrevText(), "/", ""))
 	resp, _ := soup.Get(c.URL())
-	c.HTML = soup.HTMLParse(resp)
+	c.html = soup.HTMLParse(resp)
 }
 
 // Returns the parsed HTML content of the img element containing the actual comic
 func (c Comic) ImgElem() soup.Root {
-	return c.HTML.Find("div", "id", "comic").Find("img")
+	return c.html.Find("div", "id", "comic").Find("img")
 }
 
 // Returns the URL for the img element that contains the actual comic
@@ -84,6 +88,19 @@ func (c Comic) IsDuplicate() bool {
 	return stringInSlice(c.FileName(), filenames)
 }
 
+// Returns a list of integers, starting with the newest comic's number
+// and continuing in decreasing order. 404 is removed, because xkcd.com/404
+// leads to... **drum roll** ...the site's 404 page.
+func ComicList() []int {
+	max := LatestComic().Num()
+
+	list := makeRange(max)
+	list = remove(list, 404)
+	list = reverse(list)
+
+	return list
+}
+
 // Returns a Comic representing the most recent post on xkcd.com
 func LatestComic() Comic {
 	url := "https://xkcd.com"
@@ -98,7 +115,7 @@ func LatestComic() Comic {
 }
 
 // Gets a comic based on the number
-func New(comicNum int) (Comic, error) {
+func NewComic(comicNum int) (Comic, error) {
 	url := "https://xkcd.com/" + strconv.Itoa(comicNum)
 	resp, err := soup.Get(url)
 	doc := soup.HTMLParse(resp)
@@ -161,4 +178,33 @@ func getFileNames(path string) []string {
 	}
 
 	return filenames
+}
+
+func makeRange(max int) []int {
+	var numbers []int
+	for i := 1; i <= max; i++ {
+		numbers = append(numbers, i)
+	}
+
+	return numbers
+}
+
+func remove(s []int, num int) []int {
+	var index int
+	for i, x := range s {
+		if x == num {
+			index = i
+			break
+		}
+	}
+
+	return append(s[:index], s[index+1:]...)
+}
+
+func reverse(list []int) []int {
+	for i, j := 0, len(list)-1; i < j; i, j = i+1, j-1 {
+		list[i], list[j] = list[j], list[i]
+	}
+
+	return list
 }
