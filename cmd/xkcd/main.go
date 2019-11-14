@@ -12,9 +12,8 @@ import (
 )
 
 var (
-	wg sync.WaitGroup
-	// TODO: SEE IF DOUBLING THE NUMBER OF GO ROUTINES INCREASES DOWNLOAD SPEED
-	numProcs  = runtime.NumCPU()
+	wg        sync.WaitGroup
+	numProcs  = runtime.NumCPU() * 10
 	all       = flag.Bool("a", false, "Redownload all comics and skip duplicates?")
 	randomize = flag.Bool("r", false, "Randomize order of comics?")
 )
@@ -27,9 +26,9 @@ func main() {
 	// Make the appropriate directories
 	os.MkdirAll(xkcd.HomeDir, os.ModePerm)
 
+	// Get a list of integers representing all the comics
 	comicList := xkcd.ComicList()
 
-	// TODO: SEE IF MAKING THIS A BUFFERED CHANNEL SPEEDS THINGS UP
 	comicChan := make(chan int)
 
 	go func() {
@@ -75,18 +74,15 @@ func scraper(comics chan int) {
 			if *all {
 				fmt.Println("Skipping comic #"+comic.ID(), "- duplicate")
 				continue
-			} else {
-				break
 			}
+			break
 		}
 
 		err = comic.Save()
 		if err != nil {
 			fmt.Println("Skipping comic #"+comic.ID(), "-", err)
-			comic.PrevComic()
 			continue
-		} else {
-			fmt.Println("Downloading comic #" + comic.ID())
 		}
+		fmt.Println("Downloading comic #" + comic.ID())
 	}
 }
