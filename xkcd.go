@@ -109,7 +109,12 @@ func ComicList() []int {
 // Returns a Comic representing the most recent post on xkcd.com
 func LatestComic() Comic {
 	url := "https://xkcd.com"
-	resp, _ := soup.Get(url)
+	resp, err := soup.Get(url)
+    if err != nil {
+        fmt.Println("Could not establish an internet connection\nExiting program.")
+        os.Exit(2)
+    }
+
 	doc := soup.HTMLParse(resp)
 
 	prev := doc.Find("a", "rel", "prev")
