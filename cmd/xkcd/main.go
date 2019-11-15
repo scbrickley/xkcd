@@ -13,11 +13,11 @@ import (
 
 var (
 	wg        sync.WaitGroup
-    speed     = flag.Int("s", 1, "Multiply the number of spawned scrapers by this number")
+	speed     = flag.Int("s", 1, "Multiply the number of spawned scrapers by this number")
 	all       = flag.Bool("a", false, "Redownload all comics and skip duplicates?")
 	randomize = flag.Bool("r", false, "Randomize order of comics?")
 	hide      = flag.Bool("h", false, "Don't load comic browser after comic scraper finishes?")
-    debug     = flag.Bool("d", false, "Print debug info?")
+	debug     = flag.Bool("d", false, "Print debug info?")
 )
 
 func init() {
@@ -28,9 +28,9 @@ func main() {
 	numProcs := runtime.NumCPU() * *speed
 	runtime.GOMAXPROCS(numProcs)
 
-    if *debug {
-        fmt.Printf("Using %d routines\n", numProcs)
-    }
+	if *debug {
+		fmt.Printf("Using %d routines\n", numProcs)
+	}
 
 	// Make the appropriate directories
 	os.MkdirAll(xkcd.HomeDir, os.ModePerm)
