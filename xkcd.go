@@ -112,7 +112,7 @@ func LatestComic() Comic {
 	resp, err := soup.Get(url)
 	if err != nil {
 		fmt.Println("Could not establish an internet connection\nExiting program.")
-		os.Exit(2)
+		os.Exit(1)
 	}
 
 	doc := soup.HTMLParse(resp)
