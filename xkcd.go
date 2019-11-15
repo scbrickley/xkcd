@@ -16,7 +16,8 @@ import (
 )
 
 var (
-	HomeDir string
+	HomeDir    string
+	errNoComic = errors.New("No comic element")
 )
 
 func init() {
@@ -58,7 +59,12 @@ func (c *Comic) PrevComic() {
 
 // Returns the parsed HTML content of the img element containing the actual comic
 func (c Comic) ImgElem() soup.Root {
-	return c.html.Find("div", "id", "comic").Find("img")
+	elem := c.html.Find("div", "id", "comic")
+	if elem.Error != nil {
+		return soup.Root{nil, "", errNoComic}
+	}
+
+	return elem.Find("img")
 }
 
 // Returns the URL for the img element that contains the actual comic
@@ -89,13 +95,12 @@ func (c Comic) IsDuplicate() bool {
 }
 
 // Returns a list of integers, starting with the newest comic's number
-// and continuing in decreasing order. 404 is removed, because xkcd.com/404
-// leads to... **drum roll** ...the site's 404 page.
+// and continuing in decreasing order, because we always want to get i
+// the newest comics first.
 func ComicList() []int {
 	max := LatestComic().Num()
 
 	list := makeRange(max)
-	list = remove(list, 404)
 	list = reverse(list)
 
 	return list
@@ -126,8 +131,8 @@ func NewComic(comicNum int) (Comic, error) {
 // Save the comic to $HOME/.xkcd
 func (c Comic) Save() error {
 	// No comic element was found
-	if c.ImgElem().Pointer == nil {
-		return errors.New("No comic element")
+	if c.ImgElem().Error != nil {
+		return errNoComic
 	}
 
 	// Improperly formatted image URL, which usually means it's not an image

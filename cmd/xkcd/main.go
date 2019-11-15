@@ -13,13 +13,15 @@ import (
 
 var (
 	wg        sync.WaitGroup
-	numProcs  = runtime.NumCPU() * 10
+	numProcs  = runtime.NumCPU()
 	all       = flag.Bool("a", false, "Redownload all comics and skip duplicates?")
 	randomize = flag.Bool("r", false, "Randomize order of comics?")
+	hide      = flag.Bool("h", false, "Don't load comic browser after comic scraper finishes?")
 )
 
 func init() {
 	flag.Parse()
+	//runtime.GOMAXPROCS(numProcs)
 }
 
 func main() {
@@ -45,6 +47,10 @@ func main() {
 
 	wg.Wait()
 	fmt.Println("No more comics to download.")
+
+	if *hide {
+		return
+	}
 
 	if *randomize {
 		exec.Command("feh", "-z", "-x", xkcd.HomeDir).Run()
@@ -75,6 +81,7 @@ func scraper(comics chan int) {
 				fmt.Println("Skipping comic #"+comic.ID(), "- duplicate")
 				continue
 			}
+
 			break
 		}
 
