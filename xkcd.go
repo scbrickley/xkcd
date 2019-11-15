@@ -111,7 +111,7 @@ func LatestComic() Comic {
 	url := "https://xkcd.com"
 	resp, err := soup.Get(url)
 	if err != nil {
-		fmt.Println("Could not establish an internet connection\nExiting program.")
+		fmt.Println("Could not establish an internet connection.\nExiting program.")
 		os.Exit(1)
 	}
 
@@ -129,7 +129,7 @@ func NewComic(comicNum int) Comic {
 	url := "https://xkcd.com/" + strconv.Itoa(comicNum)
 	resp, err := soup.Get(url)
 	if err != nil {
-		fmt.Println("Could not establish an internet connection\nExiting program.")
+		fmt.Println("Could not establish an internet connection.\nExiting program.")
 		os.Exit(1)
 	}
 
