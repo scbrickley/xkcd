@@ -125,12 +125,17 @@ func LatestComic() Comic {
 }
 
 // Gets a comic based on the number
-func NewComic(comicNum int) (Comic, error) {
+func NewComic(comicNum int) Comic {
 	url := "https://xkcd.com/" + strconv.Itoa(comicNum)
 	resp, err := soup.Get(url)
+	if err != nil {
+		fmt.Println("Could not establish an internet connection\nExiting program.")
+		os.Exit(1)
+	}
+
 	doc := soup.HTMLParse(resp)
 
-	return Comic{comicNum, doc}, err
+	return Comic{comicNum, doc}
 }
 
 // Save the comic to $HOME/.xkcd

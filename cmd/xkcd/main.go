@@ -74,11 +74,7 @@ func scraper(comics chan int) {
 			return
 		}
 
-		comic, err := xkcd.NewComic(number)
-		if err != nil {
-			fmt.Println("Skipping comic #"+comic.ID(), "-", err)
-			continue
-		}
+		comic := xkcd.NewComic(number)
 
 		// If comic.FileName() is already in $HOME/.xkcd, either:
 		// 1. skip it, or
@@ -92,7 +88,7 @@ func scraper(comics chan int) {
 			break
 		}
 
-		err = comic.Save()
+		err := comic.Save()
 		if err != nil {
 			fmt.Println("Skipping comic #"+comic.ID(), "-", err)
 			continue
