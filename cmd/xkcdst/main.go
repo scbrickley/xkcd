@@ -17,7 +17,12 @@ func main() {
 	// Make the appropriate directories
 	os.MkdirAll(xkcd.HomeDir, os.ModePerm)
 
-	comic := xkcd.LatestComic()
+	comic, err := xkcd.LatestComic()
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("Exiting program")
+		os.Exit(1)
+	}
 
 	for comic.Num() >= 1 {
 		// If comic.FileName() is already in $HOME/.xkcd, either:
@@ -26,7 +31,12 @@ func main() {
 		if comic.IsDuplicate() {
 			if *all {
 				fmt.Println("Skipping comic #"+comic.ID(), "- duplicate")
-				comic.PrevComic()
+				err := comic.PrevComic()
+				if err != nil {
+					fmt.Println(err)
+					fmt.Println("Exiting program")
+					os.Exit(1)
+				}
 				continue
 			} else {
 				fmt.Println("No more new comics.")
@@ -34,15 +44,25 @@ func main() {
 			}
 		}
 
-		err := comic.Save()
+		err = comic.Save()
 		if err != nil {
 			fmt.Println("Skipping comic #"+comic.ID(), "-", err)
-			comic.PrevComic()
+			err = comic.PrevComic()
+			if err != nil {
+				fmt.Println(err)
+				fmt.Println("Exiting program")
+				os.Exit(1)
+			}
 			continue
 		}
 
 		fmt.Println("Downloading comic #" + comic.ID())
-		comic.PrevComic()
+		err = comic.PrevComic()
+		if err != nil {
+			fmt.Println(err)
+			fmt.Println("Exiting program")
+			os.Exit(1)
+		}
 	}
 
 	if *randomize {

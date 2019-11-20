@@ -36,7 +36,12 @@ func main() {
 	os.MkdirAll(xkcd.HomeDir, os.ModePerm)
 
 	// Get a list of integers representing all the comics
-	comicList := xkcd.ComicList()
+	comicList, err := xkcd.ComicList()
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("Exiting program")
+		os.Exit(1)
+	}
 
 	comicChan := make(chan int)
 
@@ -74,7 +79,12 @@ func scraper(comics chan int) {
 			return
 		}
 
-		comic := xkcd.NewComic(number)
+		comic, err := xkcd.NewComic(number)
+		if err != nil {
+			fmt.Println(err)
+			fmt.Println("Exiting program")
+			os.Exit(1)
+		}
 
 		// If comic.FileName() is already in $HOME/.xkcd, either:
 		// 1. skip it, or
@@ -88,7 +98,7 @@ func scraper(comics chan int) {
 			break
 		}
 
-		err := comic.Save()
+		err = comic.Save()
 		if err != nil {
 			fmt.Println("Skipping comic #"+comic.ID(), "-", err)
 			continue

@@ -16,8 +16,9 @@ import (
 )
 
 var (
-	HomeDir    string
-	errNoComic = errors.New("No comic element")
+	HomeDir       string
+	errNoComic    = errors.New("No comic element")
+	errNoInternet = errors.New("Could not fetch webpage")
 )
 
 func init() {
@@ -51,10 +52,16 @@ func (c Comic) PrevText() string {
 
 // Finds the previous comic, sets the Num field to the number of the new comic
 // and updates the HTML content accordingly
-func (c *Comic) PrevComic() {
+func (c *Comic) PrevComic() error {
 	c.num, _ = strconv.Atoi(strings.ReplaceAll(c.PrevText(), "/", ""))
-	resp, _ := soup.Get(c.URL())
-	c.html = soup.HTMLParse(resp)
+	resp, err := soup.Get(c.URL())
+	doc := soup.HTMLParse(resp)
+	if err != nil {
+		return errNoInternet
+	}
+
+	c.html = doc
+	return nil
 }
 
 // Returns the parsed HTML content of the img element containing the actual comic
@@ -97,45 +104,46 @@ func (c Comic) IsDuplicate() bool {
 // Returns a list of integers, starting with the newest comic's number
 // and continuing in decreasing order, because we always want to get i
 // the newest comics first.
-func ComicList() []int {
-	max := LatestComic().Num()
+func ComicList() ([]int, error) {
+	comic, err := LatestComic()
+	if err != nil {
+		return nil, err
+	}
+
+	max := comic.Num()
 
 	list := makeRange(max)
 	list = reverse(list)
 
-	return list
+	return list, nil
 }
 
 // Returns a Comic representing the most recent post on xkcd.com
-func LatestComic() Comic {
+func LatestComic() (Comic, error) {
 	url := "https://xkcd.com"
 	resp, err := soup.Get(url)
-	if err != nil {
-		fmt.Println("Could not establish an internet connection.\nExiting program.")
-		os.Exit(1)
-	}
-
 	doc := soup.HTMLParse(resp)
+	if err != nil {
+		return Comic{0, doc}, errNoInternet
+	}
 
 	prev := doc.Find("a", "rel", "prev")
 	comicNum, _ := strconv.Atoi(strings.ReplaceAll(prev.Attrs()["href"], "/", ""))
 	comicNum++
 
-	return Comic{comicNum, doc}
+	return Comic{comicNum, doc}, nil
 }
 
 // Gets a comic based on the number
-func NewComic(comicNum int) Comic {
+func NewComic(comicNum int) (Comic, error) {
 	url := "https://xkcd.com/" + strconv.Itoa(comicNum)
 	resp, err := soup.Get(url)
+	doc := soup.HTMLParse(resp)
 	if err != nil {
-		fmt.Println("Could not establish an internet connection.\nExiting program.")
-		os.Exit(1)
+		return Comic{0, doc}, errNoInternet
 	}
 
-	doc := soup.HTMLParse(resp)
-
-	return Comic{comicNum, doc}
+	return Comic{comicNum, doc}, nil
 }
 
 // Save the comic to $HOME/.xkcd
