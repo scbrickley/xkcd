@@ -18,6 +18,7 @@ var (
 	randomize = flag.Bool("r", false, "Randomize order of comics?")
 	hide      = flag.Bool("h", false, "Don't load comic browser after comic scraper finishes?")
 	debug     = flag.Bool("d", false, "Print debug info?")
+	offline   = flag.Bool("o", false, "Run in offline mode?")
 )
 
 func init() {
@@ -25,6 +26,20 @@ func init() {
 }
 
 func main() {
+	if !*hide {
+		defer func() {
+			if *randomize {
+				exec.Command("feh", "-z", "-x", xkcd.HomeDir).Run()
+			} else {
+				exec.Command("feh", "-n", "-x", xkcd.HomeDir).Run()
+			}
+		}()
+	}
+
+	if *offline {
+		return
+	}
+
 	numProcs := runtime.NumCPU() * *speed
 	runtime.GOMAXPROCS(numProcs)
 
@@ -59,16 +74,6 @@ func main() {
 
 	wg.Wait()
 	fmt.Println("No more comics to download.")
-
-	if *hide {
-		return
-	}
-
-	if *randomize {
-		exec.Command("feh", "-z", "-x", xkcd.HomeDir).Run()
-	} else {
-		exec.Command("feh", "-n", "-x", xkcd.HomeDir).Run()
-	}
 }
 
 func scraper(comics chan int) {
