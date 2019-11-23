@@ -1,5 +1,5 @@
 # XKCD Terminal Browser
-## Now with ***Added Concurrency&#8482;***
+#### Now with ***Added Concurrency&#8482;***
 
 A command line app that downloads all comics from [xkcd.com](https://xkcd.com) and allows you to browse through them from the terminal.
 
