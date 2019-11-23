@@ -43,4 +43,13 @@ After installation, you should be able to type `xkcd` into your terminal to star
 | -o | Run in offline mode. | Exit program if no internet connection can be made. |
 | -h | Exit program after comic scraper is done. | Load comic browser once scraper is finished. |
 | -a | Scan the comic directory and download missing comics. Skip any duplicate comics. | Stop scraper once the first duplicate comic is reached. |
-| -r | Randomize order of comics. | View the newest comic first. Right arrow key cycles to the previous comic. |
+| -r | Randomize order of comics. | View the newest comic first. Right arrow key cycles to the next most recent comic. |
+
+### Browser Controls
+
+| Key | Behavior |
+|-----|----------|
+| Right Arrow/Left Arrow | Next/Previous Comic |
+| Up Arrow/Down Arrow | Zoom In/Out |
+| Ctrl+Up/Down/Left/Right | Adjust View (For Comics that are zoomed in or too large too fit on the screen) |
+| Q | Exit Program |
