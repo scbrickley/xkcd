@@ -51,5 +51,5 @@ After installation, you should be able to type `xkcd` into your terminal to star
 |-----|----------|
 | Right Arrow/Left Arrow | Next/Previous Comic |
 | Up Arrow/Down Arrow | Zoom In/Out |
-| Ctrl+Up/Down/Left/Right | Adjust View (For Comics that are zoomed in or too large too fit on the screen) |
+| Ctrl+Up/Down/Left/Right | Adjust View (For comics that are zoomed in or too large too fit on the screen) |
 | Q | Exit Program |
