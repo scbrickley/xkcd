@@ -41,10 +41,14 @@ The default behavior is to display the newest comic first, and then browse throu
 
 If you accidentally delete some of the comics, you can always run `xkcd -a` to re-download them. The program will skip over any duplicate comics in the `$HOME/.xkcd` directory, and only download the ones that are missing.
 
-### Flags
-| Flag | Description | Default Behavior w/o Flag |
-|------|-------------|---------|
-| -o | Run in offline mode. | Exit program if no internet connection can be made. |
-| -h | Exit program after comic scraper is done. | Load comic browser once scraper is finished. |
-| -a | Scan the comic directory and download missing comics. Skip any duplicate comics. | Stop scraper once the first duplicate comic is reached. |
-| -r | Randomize order of comics. | View the newest comic first. Right arrow key cycles to the previous comic. |
+## Known Issues
+
+If `feh` is printing out error messages about incorrect sRGB profiles for .png files when viewing certain comics, follow these instructions:
+
+- Install `pngcrush` via `sudo apt-get install pngcrush` (or the equivalent for your package manager).
+
+- Navigate to the project directory: `cd $HOME/go/src/gitlab.com/scbrickley/xkcd`
+
+- Run the `fix` script: `./fix`
+
+The error is actually harmless, but if the error messages are bothering you, this should fix the problem.
