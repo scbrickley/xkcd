@@ -52,7 +52,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	comicChan := make(chan int)
+	comicChan := make(chan int, len(comicList))
 
 	go func() {
 		for _, comic := range comicList {
