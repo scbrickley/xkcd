@@ -1,4 +1,5 @@
 # XKCD Terminal Browser
+#### Now with ***Added Concurrency&#8482;***
 
 A command line app that downloads all comics from [xkcd.com](https://xkcd.com) and allows you to browse through them from the terminal.
 
@@ -36,18 +37,19 @@ This is a rudimentary version. The following features are still in the works, an
 
 After installation, you should be able to type `xkcd` into your terminal to start the process. Initial download of all the comics may take a few minutes. Once it's done, a `feh` window should pop up and let you browse through the comics as you like.
 
-The default behavior is to display the newest comic first, and then browse through the comics in order from newest to oldest. If you instead want to view the comics in a randomized order, type `xkcd -r`.
+### Flags
+| Flag | Description | Default Behavior w/o Flag |
+|------|-------------|---------|
+| -o | Run in offline mode. | Exit program if no internet connection can be made. |
+| -h | Exit program after comic scraper is done. | Load comic browser once scraper is finished. |
+| -a | Scan the comic directory and download missing comics. Skip any duplicate comics. | Stop scraper once the first duplicate comic is reached. |
+| -r | Randomize order of comics. | View the newest comic first. Right arrow key cycles to the next most recent comic. |
 
-If you accidentally delete some of the comics, you can always run `xkcd -a` to re-download them. The program will skip over any duplicate comics in the `$HOME/.xkcd` directory, and only download the ones that are missing.
+### Browser Controls
 
-## Known Issues
-
-If `feh` is printing out error messages about incorrect sRGB profiles for .png files when viewing certain comics, follow these instructions:
-
-- Install `pngcrush` via `sudo apt-get install pngcrush` (or the equivalent for your package manager).
-
-- Navigate to the project directory: `cd $HOME/go/src/gitlab.com/scbrickley/xkcd`
-
-- Run the `fix` script: `./fix`
-
-The error is actually harmless, but if the error messages are bothering you, this should fix the problem.
+| Key | Behavior |
+|-----|----------|
+| Right Arrow/Left Arrow | Next/Previous Comic |
+| Up Arrow/Down Arrow | Zoom In/Out |
+| Ctrl+Up/Down/Left/Right | Adjust View (For comics that are zoomed in or too large too fit on the screen) |
+| Q | Exit Program |
