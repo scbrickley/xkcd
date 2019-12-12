@@ -41,7 +41,7 @@ After installation, you should be able to type `xkcd` into your terminal to star
 | Flag | Description | Default Behavior w/o Flag |
 |------|-------------|---------|
 | -o | Run in offline mode. | Exit program if no internet connection can be made. |
-| -h | Exit program after comic scraper is done. | Load comic browser once scraper is finished. |
+| -i | Exit program after comic scraper is done. | Load comic browser once scraper is finished. |
 | -a | Scan the comic directory and download missing comics. Skip any duplicate comics. | Stop scraper once the first duplicate comic is reached. |
 | -r | Randomize order of comics. | View the newest comic first. Right arrow key cycles to the next most recent comic. |
 

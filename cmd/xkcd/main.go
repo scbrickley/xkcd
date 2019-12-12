@@ -15,13 +15,14 @@ var (
 	wg        sync.WaitGroup
 	all       = flag.Bool("a", false, "Redownload all comics and skip duplicates?")
 	randomize = flag.Bool("r", false, "Randomize order of comics?")
-	hide      = flag.Bool("h", false, "Don't load comic browser after comic scraper finishes?")
+	hide      = flag.Bool("i", false, "Don't load comic browser after comic scraper finishes?")
 	offline   = flag.Bool("o", false, "Run in offline mode?")
 	numProcs  = runtime.NumCPU()
 )
 
 func init() {
 	flag.Parse()
+	runtime.GOMAXPROCS(numProcs)
 }
 
 func main() {
@@ -38,8 +39,6 @@ func main() {
 	if *offline {
 		return
 	}
-
-	runtime.GOMAXPROCS(numProcs)
 
 	// Make the appropriate directories
 	os.MkdirAll(xkcd.HomeDir, os.ModePerm)
