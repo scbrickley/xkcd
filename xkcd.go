@@ -50,10 +50,26 @@ func (c Comic) PrevText() string {
 	return c.html.Find("a", "rel", "prev").Attrs()["href"]
 }
 
+func (c Comic) NextText() string {
+	return c.html.Find("a", "rel", "next").Attrs()["href"]
+}
+
 // Finds the previous comic, sets the Num field to the number of the new comic
 // and updates the HTML content accordingly
 func (c *Comic) PrevComic() error {
 	c.num, _ = strconv.Atoi(strings.ReplaceAll(c.PrevText(), "/", ""))
+	resp, err := soup.Get(c.URL())
+	doc := soup.HTMLParse(resp)
+	if err != nil {
+		return errNoInternet
+	}
+
+	c.html = doc
+	return nil
+}
+
+func (c *Comic) NextComic() error {
+	c.num, _ = strconv.Atoi(strings.ReplaceAll(c.NextText(), "/", ""))
 	resp, err := soup.Get(c.URL())
 	doc := soup.HTMLParse(resp)
 	if err != nil {
