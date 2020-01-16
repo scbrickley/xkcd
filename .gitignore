@@ -1,2 +1,2 @@
 cmd/xkcd/xkcd
-cmd/xkcdst/xkcdst
+cmd/xkcdst/*
