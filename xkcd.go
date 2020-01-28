@@ -17,6 +17,7 @@ import (
 
 var (
 	HomeDir       string
+	CaptionDir    string
 	errNoComic    = errors.New("No comic element")
 	errNoInternet = errors.New("Could not fetch webpage")
 )
@@ -24,6 +25,7 @@ var (
 func init() {
 	user, _ := user.Current()
 	HomeDir = fp.Join(user.HomeDir, ".xkcd")
+	CaptionDir = fp.Join(HomeDir, "captions")
 }
 
 type Comic struct {
@@ -50,6 +52,7 @@ func (c Comic) PrevText() string {
 	return c.html.Find("a", "rel", "prev").Attrs()["href"]
 }
 
+// Returns the text in the "href" of the "next" link of the comic webpage
 func (c Comic) NextText() string {
 	return c.html.Find("a", "rel", "next").Attrs()["href"]
 }
@@ -68,6 +71,8 @@ func (c *Comic) PrevComic() error {
 	return nil
 }
 
+// Finds the previous comic, sets the Num field to the number of the new comic
+// and updates the HTML content accordingly
 func (c *Comic) NextComic() error {
 	c.num, _ = strconv.Atoi(strings.ReplaceAll(c.NextText(), "/", ""))
 	resp, err := soup.Get(c.URL())
@@ -77,6 +82,34 @@ func (c *Comic) NextComic() error {
 	}
 
 	c.html = doc
+	return nil
+}
+
+func (c Comic) Caption() string {
+	elem := c.html.Find("div", "id", "comic")
+	if elem.Error != nil {
+		return ""
+	}
+
+	return elem.Find("img").Attrs()["title"]
+}
+
+func (c Comic) CaptionPath() string {
+	return fp.Join(CaptionDir, c.FileName() + ".txt")
+}
+
+func (c Comic) WriteCaptionFile() error {
+	file, err := os.Create(c.CaptionPath())
+	defer file.Close()
+	if err != nil {
+		return errors.New("Could not create caption file")
+	}
+
+	_, err = io.WriteString(file, c.Caption())
+	if err != nil {
+		return errors.New("Could not write to caption file")
+	}
+
 	return nil
 }
 
@@ -187,11 +220,18 @@ func (c Comic) Save() error {
 	if err != nil {
 		return errors.New("Could not create file")
 	}
+	defer comicFile.Close()
 
 	// Copy the image data into the filespace
 	_, err = io.Copy(comicFile, comicData.Body)
 	if err != nil {
 		return errors.New("Could not copy data")
+	}
+
+	// Finally, write the caption text to the appropriate caption file
+	err = c.WriteCaptionFile()
+	if err != nil {
+		return err
 	}
 
 	return nil
