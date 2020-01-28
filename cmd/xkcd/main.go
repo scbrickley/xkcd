@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"sync"
 
-	"gitlab.com/scbrickley/xkcd"
+	"github.com/scbrickley/xkcd"
 )
 
 var (
