@@ -6,7 +6,8 @@ A command line app that downloads all comics from [xkcd.com](https://xkcd.com) a
 This is a rudimentary version. The following features are still in the works, and will be added as the project progresses:
 
 - Custom image browser (to remove dependency on `feh`)
-- View comic title and captions
+- ~~View captions~~
+- View comic title
 - Search by title
 - Search by number
 - Save favorites
