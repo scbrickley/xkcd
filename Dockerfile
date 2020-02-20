@@ -1,1 +1,2 @@
-BUILD A DOCKER IMAGE
+FROM golang:1.14
+
