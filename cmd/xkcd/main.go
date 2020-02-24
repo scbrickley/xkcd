@@ -13,10 +13,10 @@ import (
 
 var (
 	wg        sync.WaitGroup
-	all       = flag.Bool("a", false, "Redownload all comics and skip duplicates?")
-	randomize = flag.Bool("r", false, "Randomize order of comics?")
-	hide      = flag.Bool("i", false, "Don't load comic browser after comic scraper finishes?")
-	offline   = flag.Bool("o", false, "Run in offline mode?")
+	all       = flag.Bool("a", false, "Scan comic directory and download missing comics")
+	randomize = flag.Bool("r", false, "Randomize order of comics")
+	hide      = flag.Bool("i", false, "Hide browser after comic scraper finishes")
+	offline   = flag.Bool("o", false, "Run in offline mode")
 	numProcs  = runtime.NumCPU()
 )
 
