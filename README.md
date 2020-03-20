@@ -16,7 +16,7 @@ This is a rudimentary version. The following features are still in the works, an
 
 ## Installation
 
-*WARNING: THE `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS. If you want to build your own executable, simply list `"github.com/scbrickley/xkcd"` under your imports in your `main.go` file.*
+*WARNING: The `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS. If you want to build your own executable, simply list `"github.com/scbrickley/xkcd"` under your imports in your `main.go` file.*
 
 - Install the Go programming language on your machine, if you haven't already. Follow instructions [here](https://golang.org/dl/) to do so.
     - Don't forget to add `export PATH="$HOME/go/bin:$PATH"` to the end of `$HOME/.profile`
