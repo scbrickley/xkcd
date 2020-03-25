@@ -44,7 +44,7 @@ This program does not include any unit tests because:
 
 - Creating a mock server to test a program that will not run without an internet connection seems pointless, especially when the code is only designed to query one website. If the website ever changes enough to break the program, the unit tests will not reflect that fact.
 
-Because of this, and because the program is less than 400 lines of code, and not difficult to debug, I've decided that the best way to test it out is by using it.
+Because of this, and because the program is less than 400 lines of code, and not difficult to debug, I've decided that the best way to test it is to use it.
 
 You can help me test the program by installing it and running it for yourself, and submitting an issue if you run into any problems. You can also double check that there are no race conditions by compiling with `go build -race` when installing the program. If you get no output, then you're good to go.
 
