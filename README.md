@@ -21,7 +21,7 @@ This is a rudimentary version. The following features are still in the works, an
 This project uses Go modules for dependency management, and it is recommended that you switch over to a more recent version of Go that uses modules as the default (`go 1.13` or later) before installing the program. The program should still work for older versions of Go that use the deprecated `GOPATH`, but it is not recommended.
 
 - Install the Go programming language on your machine, if you haven't already. Follow instructions [here](https://golang.org/dl/) to do so.
-	- Note that there are other methods for installing Go besides downloading and extracting the tarball, (the method outlined on the official Go website). I won't detail them here, but as long as `go version` outputs something like `go version 1.14.1 linux/amd64`, you're fine.
+	- Note that there are other methods for installing Go besides downloading and extracting the tarball (the method outlined on the official Go website). I won't detail them here, but as long as `go version` outputs something like `go version 1.14.1 linux/amd64`, you're fine.
 - Install `feh`
 	- `sudo apt-get install feh` for Debian-based distros
 	- `sudo pacman -S feh` for Arch-based distros
