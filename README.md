@@ -18,26 +18,25 @@ This is a rudimentary version. The following features are still in the works, an
 
 *WARNING: The `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS. If you want to build your own executable, simply list `"github.com/scbrickley/xkcd"` under your imports in your `main.go` file.*
 
-- Install the Go programming language on your machine, if you haven't already. Follow instructions [here](https://golang.org/dl/) to do so.
-    - Don't forget to add `export PATH="$HOME/go/bin:$PATH"` to the end of `$HOME/.profile`
-- Install `feh`
-    - `sudo apt-get install feh` for Debian-based distros
-    - `sudo pacman -S feh` for Arch-based distros
-    - ...or the equivalent for your distribution's package manager.
-- Create your Go directory if you don't have one already: `mkdir -p $HOME/go/src`
-- Navigate to that directory `cd $HOME/go/src`
-- Fetch the repository using `go get github.com/scbrickley/xkcd`
-- Navigate to the cmd directory, compile, and install
-    - `cd $HOME/go/src/github.com/scbrickley/xkcd/cmd/xkcd`
-    - `go get`
-    - `go build`
-    - `go install`
+The project already has a go.mod and go.sum file in it, so as long as you have a recent version of the Go programming language (1.13 or later recommended) installed, you should be able to install the program by following these steps:
 
-**Note: these commands will not work if you keep your Go working directory somewhere other than your home folder. Adjust these commands accordingly.**
+- Install the Go programming language on your machine, if you haven't already. Follow instructions [here](https://golang.org/dl/) to do so.
+	- Note that there are other methods for installing Go downloading and extracting the tarball, as detailed on the official Go website. I won't detail them here, but as long as `go version` outputs something like `go version 1.14.1 linux/amd64`, you're probably fine.
+- Install `feh`
+	- `sudo apt-get install feh` for Debian-based distros
+	- `sudo pacman -S feh` for Arch-based distros
+	- ...or the equivalent for your distribution's package manager.
+- run `git clone github.com/scbrickley/xkcd' from `$HOME/go/src`, if you're still using `GOPATH`, or from whatever directory you want if have switched over to Go Modules.
+- `cd xkcd/cmd/xkcd`
+- `go build && go install`
 
 ## Usage
 
 After installation, you should be able to type `xkcd` into your terminal to start the process. Initial download of all the comics may take a few minutes. Once it's done, a `feh` window should pop up and let you browse through the comics as you like.
+
+## Testing the Executable
+
+You can help me test the program by installing it and running it for yourself, and submitting an issue if you run into any problems. You can also double check that there are no race conditions by compiling with `go build -race` when installing the program. If you get no output, then you're good to go.
 
 ### Flags
 | Flag | Description | Default Behavior w/o Flag |
