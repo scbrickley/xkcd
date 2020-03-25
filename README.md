@@ -39,6 +39,7 @@ After installation, you should be able to type `xkcd` into your terminal to star
 This program does not include any unit tests because: 
 
 - Having unit tests that rely on an internet connection is bad practice
+
 ...but...
 
 - Creating a mock server to test a program that will not run without an internet connection seems pointless, especially when the code is only designed to query one website. If the website ever changes enough to break the program, the unit tests will not reflect that fact.
