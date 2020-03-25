@@ -16,12 +16,12 @@ This is a rudimentary version. The following features are still in the works, an
 
 ## Installation
 
-*WARNING: The `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS. If you want to build your own executable, simply list `"github.com/scbrickley/xkcd"` under your imports in your `main.go` file.*
+*WARNING: The `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS. If you want to build your own executable, simply list `"github.com/scbrickley/xkcd"` under your imports in your own Go program.*
 
-The project already has a go.mod and go.sum file in it, so as long as you have a recent version of the Go programming language (1.13 or later recommended) installed, you should be able to install the program by following these steps:
+This project uses Go modules for dependency management, and it is recommended that you switch over to a more recent version of Go that uses modules as the default (`go 1.13` or later) before installing the program. The program should still work for older versions of Go that use the deprecated `GOPATH`, but it is not recommended.
 
 - Install the Go programming language on your machine, if you haven't already. Follow instructions [here](https://golang.org/dl/) to do so.
-	- Note that there are other methods for installing Go downloading and extracting the tarball, as detailed on the official Go website. I won't detail them here, but as long as `go version` outputs something like `go version 1.14.1 linux/amd64`, you're probably fine.
+	- Note that there are other methods for installing Go besides downloading and extracting the tarball, as detailed on the official Go website. I won't detail them here, but as long as `go version` outputs something like `go version 1.14.1 linux/amd64`, you're probably fine.
 - Install `feh`
 	- `sudo apt-get install feh` for Debian-based distros
 	- `sudo pacman -S feh` for Arch-based distros
@@ -35,6 +35,15 @@ The project already has a go.mod and go.sum file in it, so as long as you have a
 After installation, you should be able to type `xkcd` into your terminal to start the process. Initial download of all the comics may take a few minutes. Once it's done, a `feh` window should pop up and let you browse through the comics as you like.
 
 ## Testing the Executable
+
+This program does not include any unit tests because: 
+
+- Having unit tests that rely on an internet connection is bad practice
+...but...
+
+- Creating a mock server to test a program that will not run without an internet connection seems pointless, especially when the code is only designed to query one website. If the website ever changes enough to break the program, the unit tests will not reflect that fact.
+
+Because of this, and because the program is less than 400 lines of code, and not difficult to debug, I've decided that the best way to test it out is by using it.
 
 You can help me test the program by installing it and running it for yourself, and submitting an issue if you run into any problems. You can also double check that there are no race conditions by compiling with `go build -race` when installing the program. If you get no output, then you're good to go.
 
