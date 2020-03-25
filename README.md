@@ -23,7 +23,7 @@ This project uses Go modules for dependency management, and it is recommended th
 - Install the Go programming language on your machine, if you haven't already. Follow instructions [here](https://golang.org/dl/) to do so.
 	- Note that there are other methods for installing Go besides downloading and extracting the tarball (the method outlined on the official Go website). I won't detail them here, but as long as `go version` outputs something like `go version 1.14.1 linux/amd64`, you're fine.
 - Install `feh`
-	- `sudo apt-get install feh` for Debian-based distros
+	- `sudo apt install feh` for Debian-based distros
 	- `sudo pacman -S feh` for Arch-based distros
 	- ...or the equivalent for your distribution's package manager.
 - run `git clone github.com/scbrickley/xkcd` from `$HOME/go/src`, if you're still using `GOPATH`, or from whatever directory you want if have switched over to Go Modules.
