@@ -71,7 +71,7 @@ func (c *Comic) PrevComic() error {
 	return nil
 }
 
-// Finds the previous comic, sets the Num field to the number of the new comic
+// Finds the next comic, sets the Num field to the number of the new comic
 // and updates the HTML content accordingly
 func (c *Comic) NextComic() error {
 	c.num, _ = strconv.Atoi(strings.ReplaceAll(c.NextText(), "/", ""))
