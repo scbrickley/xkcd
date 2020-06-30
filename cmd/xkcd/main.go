@@ -29,9 +29,9 @@ func main() {
 	if !*hide {
 		defer func() {
 			if *randomize {
-				exec.Command("feh", "-z", "-K", "captions", "-F", xkcd.HomeDir).Run()
+				exec.Command("feh", "-z", "-K", "captions", "-F", xkcd.ComicsDir).Run()
 			} else {
-				exec.Command("feh", "-n", "-K", "captions", "-F", xkcd.HomeDir).Run()
+				exec.Command("feh", "-n", "-K", "captions", "-F", xkcd.ComicsDir).Run()
 			}
 		}()
 	}
