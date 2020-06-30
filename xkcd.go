@@ -17,7 +17,12 @@ import (
 
 var (
 	HomeDir       string
+	ComicsDir     string
 	CaptionDir    string
+	TitleDir      string
+	FavDir        string
+	FavCaptionDir string
+	FavTitleDir   string
 	errNoComic    = errors.New("No comic element")
 	errNoInternet = errors.New("Could not fetch webpage")
 )
@@ -25,7 +30,12 @@ var (
 func init() {
 	user, _ := user.Current()
 	HomeDir = fp.Join(user.HomeDir, ".xkcd")
-	CaptionDir = fp.Join(HomeDir, "captions")
+	ComicsDir = fp.Join(HomeDir, "comics")
+	CaptionDir = fp.Join(ComicsDir, "captions")
+	TitleDir = fp.Join(ComicsDir, "titles")
+	FavDir = fp.Join(HomeDir, "favorites")
+	FavCaptionDir = fp.Join(FavDir, "captions")
+	FavTitleDir = fp.Join(FavDir, "titles")
 }
 
 type Comic struct {
@@ -85,6 +95,7 @@ func (c *Comic) NextComic() error {
 	return nil
 }
 
+// The alt-text for the comic
 func (c Comic) Caption() string {
 	elem := c.html.Find("div", "id", "comic")
 	if elem.Error != nil {
@@ -94,10 +105,12 @@ func (c Comic) Caption() string {
 	return elem.Find("img").Attrs()["title"]
 }
 
+// The filepath where the caption text will be stored
 func (c Comic) CaptionPath() string {
 	return fp.Join(CaptionDir, c.FileName() + ".txt")
 }
 
+// Write the caption text to the caption file
 func (c Comic) WriteCaptionFile() error {
 	file, err := os.Create(c.CaptionPath())
 	defer file.Close()
@@ -108,6 +121,38 @@ func (c Comic) WriteCaptionFile() error {
 	_, err = io.WriteString(file, c.Caption())
 	if err != nil {
 		return errors.New("Could not write to caption file")
+	}
+
+	return nil
+}
+
+// Title of the comic
+func (c Comic) Title() string {
+	elem := c.html.Find("div", "id", "ctitle")
+	if elem.Error != nil {
+		return ""
+	}
+
+	return elem.Text()
+}
+
+// Path for the file where the title will be stored
+func (c Comic) TitlePath() string {
+	return fp.Join(TitleDir, c.FileName() + ".txt")
+}
+
+// Write the caption text to the caption file
+func (c Comic) WriteTitleFile() error {
+	file, err := os.Create(c.TitlePath())
+	file.Chmod(os.ModePerm)
+	defer file.Close()
+	if err != nil {
+		return errors.New("Could not create title file")
+	}
+
+	_, err = io.WriteString(file, c.Title())
+	if err != nil {
+		return errors.New("Could not write to title file")
 	}
 
 	return nil
@@ -141,12 +186,12 @@ func (c Comic) FileName() string {
 
 // Returns a string represnting the appropriate filepath for a comic
 func (c Comic) FilePath() string {
-	return fp.Join(HomeDir, c.FileName())
+	return fp.Join(ComicsDir, c.FileName())
 }
 
 // Checks if a comic with the same filename is already in $HOME/.xkcd/
 func (c Comic) IsDuplicate() bool {
-	filenames := getFileNames(HomeDir)
+	filenames := getFileNames(ComicsDir)
 	return stringInSlice(c.FileName(), filenames)
 }
 
@@ -230,6 +275,11 @@ func (c Comic) Save() error {
 
 	// Finally, write the caption text to the appropriate caption file
 	err = c.WriteCaptionFile()
+	if err != nil {
+		return err
+	}
+
+	err = c.WriteTitleFile()
 	if err != nil {
 		return err
 	}

@@ -42,6 +42,9 @@ func main() {
 
 	// Make the appropriate directories
 	os.MkdirAll(xkcd.CaptionDir, os.ModePerm)
+	os.MkdirAll(xkcd.TitleDir, os.ModePerm)
+	os.MkdirAll(xkcd.FavCaptionDir, os.ModePerm)
+	os.MkdirAll(xkcd.FavTitleDir, os.ModePerm)
 
 	// Get a list of integers representing all the comics
 	comicList, err := xkcd.ComicList()
