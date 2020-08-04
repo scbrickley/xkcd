@@ -1,5 +1,3 @@
-# XKCD Terminal Browser
-#### Now with ***Added Concurrency&#8482;***
 
 A command line app that downloads all comics from [xkcd.com](https://xkcd.com) and allows you to browse through them from the terminal.
 
@@ -33,20 +31,6 @@ This project uses Go modules for dependency management, and it is recommended th
 ## Usage
 
 After installation, you should be able to type `xkcd` into your terminal to start the process. Initial download of all the comics may take a few minutes. Once it's done, a `feh` window should pop up and let you browse through the comics as you like.
-
-## Testing the Executable
-
-This program does not include any unit tests because: 
-
-- Having unit tests that rely on an internet connection is bad practice
-
-...but...
-
-- Creating a mock server to test a program that will not run without an internet connection seems pointless, especially when the code is only designed to query one website. If the website ever changes enough to break the program, the unit tests will not reflect that fact.
-
-Because of this, and because the program is less than 400 lines of code, and not difficult to debug, I've decided that the best way to test it is to use it.
-
-You can help me test the program by installing it and running it for yourself, and submitting an issue if you run into any problems. You can also double check that there are no race conditions by compiling with `go build -race` when installing the program. If you get no output, then you're good to go.
 
 ### Flags
 | Flag | Description | Default Behavior w/o Flag |
