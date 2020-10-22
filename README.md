@@ -1,4 +1,3 @@
-
 A command line app that downloads all comics from [xkcd.com](https://xkcd.com) and allows you to browse through them from the terminal.
 
 This is a rudimentary version. The following features are still in the works, and will be added as the project progresses:
