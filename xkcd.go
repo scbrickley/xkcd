@@ -107,7 +107,7 @@ func (c Comic) Caption() string {
 
 // The filepath where the caption text will be stored
 func (c Comic) CaptionPath() string {
-	return fp.Join(CaptionDir, c.FileName() + ".txt")
+	return fp.Join(CaptionDir, c.FileName()+".txt")
 }
 
 // Write the caption text to the caption file
@@ -138,7 +138,7 @@ func (c Comic) Title() string {
 
 // Path for the file where the title will be stored
 func (c Comic) TitlePath() string {
-	return fp.Join(TitleDir, c.FileName() + ".txt")
+	return fp.Join(TitleDir, c.FileName()+".txt")
 }
 
 // Write the caption text to the caption file
