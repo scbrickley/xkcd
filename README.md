@@ -1,22 +1,8 @@
-
 A command line app that downloads all comics from [xkcd.com](https://xkcd.com) and allows you to browse through them from the terminal.
 
-This is a rudimentary version. The following features are still in the works, and will be added as the project progresses:
+_Note: This project is no longer being updated or maintained. This was an early project of mine that helped me learn Go and concurrent programming. I'm leaving it up as an example of my early work for my code portfolio. The `xkcd` executable still works, but I no longer intend to add any new features._
 
-- Custom image browser (to remove dependency on `feh`)
-- ~~View captions~~
-- View comic title
-- Search by title
-- Search by number
-- Save favorites
-- Installation via package manager and/or docker container
-- Proper documentation of the `xkcd` module
-
-## Installation
-
-*WARNING: The `xkcd` executable has only been tested on Linux machines. However, the `xkcd` module should work on any OS. If you want to build your own executable, simply list `"github.com/scbrickley/xkcd"` under your imports in your own Go program.*
-
-This project uses Go modules for dependency management, and it is recommended that you switch over to a more recent version of Go that uses modules as the default (`go 1.13` or later) before installing the program. The program should still work for older versions of Go that use the deprecated `GOPATH`, but it is not recommended.
+## Installation the xkcd binary
 
 - Install the Go programming language on your machine, if you haven't already. Follow instructions [here](https://golang.org/doc/install) to do so.
 	- Note that there are other methods for installing Go besides downloading and extracting the tarball (the method outlined on the official Go website). I won't detail them here, but as long as `go version` outputs something like `go version 1.14.1 linux/amd64`, you're fine.
